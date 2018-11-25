@@ -1,5 +1,5 @@
 // label declaration
-LAB name
+LBL name
 
 // keyword
 KWD name

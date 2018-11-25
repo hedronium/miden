@@ -55,7 +55,7 @@ Model tokenize(string line, Model model) {
         } else if (c == ':') {
             // Label Declaration
             model.tokens.push_back(
-                new_token("LAB", model.currentToken));
+                new_token("LBL", model.currentToken));
 
             model.currentToken = "";
         } else if (is_whitespace(c)) {
@@ -122,6 +122,8 @@ Model tokenize(string line, Model model) {
                 model.tokens.push_back(
                     new_token("TAR", model.currentToken));
             }
+
+            model.currentToken = "";
         }
     }
 

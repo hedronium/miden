@@ -25,16 +25,20 @@ int main() {
     // gather 1 line of assembly code
     ifstream asmc("test.asm");
     string line;
-    getline(asmc, line);
+    // getline(asmc, line);
 
     // setup model
     Model model;
     model.status = "default";
     model.currentToken = "";
 
-    model = tokenize("main:\n", model);
-    model = tokenize("li $s0, 100\n", model);
-    model = tokenize("jal multiplyNumbers", model);
+    // model = tokenize("li $s0, 0\n", model);
+    // model = tokenize("li $a0, 2\n", model);
+    // model = tokenize("li $a1, 3\n", model);
+
+    while (getline(asmc, line)) {
+        model = tokenize(line + " ", model);
+    }
 
     debug_tokens(model);
 
