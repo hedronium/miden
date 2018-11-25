@@ -1,6 +1,6 @@
 // Copyright Miden 2018
 #include <iostream>
-#include "includes/tokenizer.h"
+#include "../include/tokenizer.h"
 
 using std::cout;
 using std::endl;

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
-#include "includes/tokenizer.h"
+#include "../include/tokenizer.h"
 
 using std::endl;
 using std::cout;
@@ -23,7 +23,7 @@ void debug_tokens(Model model) {
 
 int main() {
     // gather 1 line of assembly code
-    ifstream asmc("test.asm");
+    ifstream asmc("input.asm");
     string line;
     // getline(asmc, line);
 
