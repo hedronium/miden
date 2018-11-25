@@ -1,12 +1,17 @@
 // label declaration
 LAB name
-// instruction name
-INS name
+
+// keyword
+KWD name
+
 // register name
 REG name
-// arbitrary value, integer
-VAL value
+
+// integer
+INT value
+
 // single line comment
 COM comment
+
 // target
-TAR value
+TAR name
