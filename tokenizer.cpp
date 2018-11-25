@@ -47,12 +47,9 @@ Model tokenize(string line, Model model) {
     char c = line[0];
     line = line.substr(1, line.length() - 1);
 
-    // ignore whitespaces
-    // if (whitespace(c))
-    //     return tokenize(line, model);
-
-    // default
     if (model.status.compare("default") == 0) {
+         // default
+
         if (is_alphanumeric(c)) {
             model.currentToken += c;
         } else if (c == ':') {
@@ -81,6 +78,8 @@ Model tokenize(string line, Model model) {
             model.currentToken = "";
         }
     } else if (model.status.compare("register") == 0) {
+        // register
+
         if (is_alphanumeric(c)) {
             model.currentToken += c;
         } else if (is_whitespace(c) || c == ',') {
@@ -96,6 +95,8 @@ Model tokenize(string line, Model model) {
                 model.status = "default";
         }
     } else if (model.status.compare("argument") == 0) {
+        // argument
+
         if (is_alphanumeric(c)) {
             model.currentToken += c;
         } else if (c == '$') {
