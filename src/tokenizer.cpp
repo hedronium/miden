@@ -1,9 +1,5 @@
 // Copyright Miden 2018
-#include <iostream>
 #include "../include/tokenizer.h"
-
-using std::cout;
-using std::endl;
 
 bool is_numeric(char c) {
     if (c >= 48 && c <= 57)
@@ -27,10 +23,10 @@ bool is_whitespace(char c) {
     return false;
 }
 
-Token* new_token(string name, string value) {
-    Token* token = new Token;
-    token->name = name;
-    token->value = value;
+Token new_token(string name, string value) {
+    Token token;
+    token.name = name;
+    token.value = value;
     return token;
 }
 
@@ -103,9 +99,15 @@ Model tokenize(string line, Model model) {
             model.status = "register";
         } else if (is_whitespace(c)) {
             if (model.currentToken.length() > 0) {
-                // Integer
-                model.tokens.push_back(
-                    new_token("INT", model.currentToken));
+                if (is_numeric(model.currentToken[0])) {
+                    // Integer
+                    model.tokens.push_back(
+                        new_token("INT", model.currentToken));
+                } else {
+                    // Target
+                    model.tokens.push_back(
+                        new_token("TAR", model.currentToken));
+                }
 
                 model.currentToken = "";
                 model.status = "default";

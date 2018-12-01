@@ -1,12 +1,12 @@
 main:
-	li $s0, 0
-	li $a0, 2
-	li $a1, 3
+	li $s0, 0 # y
+	li $a0, 2 # a = 2
+	li $a1, 3 # b = 3
 	jal multiplyNumbers
 
 multiplyNumbers:
-	li $t0, 0
-	li $v0, 0
+	li $t0, 0 # i = 0
+	li $v0, 0 # product = 0
 
 multiplyNumbersLoop:
 	beq $t0, $a1, multiplyNumbersReturn
