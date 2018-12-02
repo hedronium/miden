@@ -1,12 +1,15 @@
 main:
 	li $s0, 0
-	li $a0, 2
-	li $a1, 3
+	li $a0, 18
+	li $a1, 6
 	jal multiplyNumbers
+	addi $s0, $v0, 0
+	j done
 
 multiplyNumbers:
 	li $t0, 0
 	li $v0, 0
+	j multiplyNumbersLoop
 
 multiplyNumbersLoop:
 	beq $t0, $a1, multiplyNumbersReturn
@@ -18,3 +21,5 @@ multiplyNumbersLoop:
 
 multiplyNumbersReturn:
 	jr $ra
+done:
+	
