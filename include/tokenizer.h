@@ -16,10 +16,17 @@ struct Token {
     string value;
 };
 
+struct Label {
+    string name;
+    int address;
+};
+
 struct Model {
     string status;
     string currentToken;
     vector<Token> tokens;
+    vector<Label> labels;
+    int currentInstructionAddress;
 };
 
 bool is_numeric(char);

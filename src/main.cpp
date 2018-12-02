@@ -34,14 +34,15 @@ int main() {
     Model model;
     model.status = "default";
     model.currentToken = "";
+    model.currentInstructionAddress = 0;
 
-    model = tokenize("li $s0, 0\n", model);
-    model = tokenize("addi $s0, $t0, 1\n", model);
-    model = tokenize("lw $s0, 4($sp)\n", model);
+    // model = tokenize("li $s0, 0\n", model);
+    // model = tokenize("addi $s0, $t0, 1\n", model);
+    // model = tokenize("lw $s0, 4($sp)\n", model);
 
-    // while (getline(asmc, line)) {
-    //     model = tokenize(line + " ", model);
-    // }
+    while (getline(asmc, line)) {
+        model = tokenize(line + " ", model);
+    }
 
     // debug_tokens(model);
 

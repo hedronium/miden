@@ -11,6 +11,7 @@
 using std::cout;
 using std::endl;
 using std::ostringstream;
+using std::to_string;
 
 string parse(int, Model);
 

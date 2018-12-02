@@ -31,12 +31,12 @@ Token new_token(string name, string value) {
 }
 
 Model tokenize(string line, Model model) {
-    int last_character = 0;
+    bool last_character = false;
 
     if (line.length() == 0)
         return model;
     else if (line.length() == 1)
-        last_character = 1;
+        last_character = true;
 
     /* store the first character and create a new string
        excluding the first char */
