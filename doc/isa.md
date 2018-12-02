@@ -27,14 +27,14 @@ There are 8 registers:
 
 # Instruction formats
 
-## RRR-type
+## RRR
 Example: add $s0, $t0, $a0 will be 000 001 010 0000 100.
 
 |opcode|reg_d |reg_s | 0    |reg_t |
 |------|------|------|------|------|
 |3 bits|3 bits|3 bits|4 bits|3 bits|
 
-## RRI-type
+## RRI
 
 Example: addi $s0, $s0, 1 will be 001 001 001 0000001
 
@@ -42,10 +42,34 @@ Example: addi $s0, $s0, 1 will be 001 001 001 0000001
 |------|------|------|----------|
 |3 bits|3 bits|3 bits|7 bits    |
 
-## RI-type
+## RI
 
 Example: li $s0, 1 will be 001 001 0000000001
 
 |opcode|reg_d |immediate |
 |------|------|----------|
 |3 bits|3 bits|10 bits   |
+
+## RRT
+
+Example: beq $s0, $t0, loop
+
+|opcode|reg_a |reg_b |target|
+|------|------|------|------|
+|3 bits|3 bits|3 bits|7 bits|
+
+## J
+
+Example: j done
+
+|opcode|target |
+|------|-------|
+|3 bits|13 bits|
+
+## RT
+
+Example: jr $ra
+
+|opcode| 0     |reg   |
+|------|-------|------|
+|3 bits|10 bits|3 bits|
