@@ -90,11 +90,23 @@ Model tokenize(string line, Model model) {
             else
                 model.status = "default";
         }
+
+        // last character
+        if (last_character && model.currentToken.length() > 0) {
+            // register
+            model.tokens.push_back(
+                new_token("REG", model.currentToken));
+
+            model.currentToken = "";
+        }
     } else if (model.status.compare("argument") == 0) {
         // argument
 
         if (is_alphanumeric(c)) {
             model.currentToken += c;
+
+            if (is_numeric(c))
+                model.status = "integer";
         } else if (c == '$') {
             model.status = "register";
         } else if (is_whitespace(c)) {
@@ -114,6 +126,7 @@ Model tokenize(string line, Model model) {
             }
         }
 
+        // last character
         if (last_character && model.currentToken.length() > 0) {
             if (is_numeric(model.currentToken[0])) {
                 // Integer
@@ -125,6 +138,16 @@ Model tokenize(string line, Model model) {
                     new_token("TAR", model.currentToken));
             }
 
+            model.currentToken = "";
+        }
+    } else if (model.status.compare("integer") == 0) {
+        if (is_numeric(c)) {
+            model.currentToken += c;
+        } else {
+            model.status = "default";
+
+            model.tokens.push_back(
+                new_token("INT", model.currentToken));
             model.currentToken = "";
         }
     }

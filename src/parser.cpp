@@ -45,6 +45,13 @@ string r_instruction(string name, string reg) {
     return os.str();
 }
 
+// jr $t0
+string rr_instruction(string name, string reg_d, string offset, string reg_s) {
+    ostringstream os;
+    os << name << " " << reg_d << " " << reg_s << "(" << offset << ")" << endl;
+    return os.str();
+}
+
 // beq $s0, $t0, loop
 string rrj_instruction(string name, string reg_a, string reg_b,
     string label) {
@@ -100,6 +107,12 @@ string parse(int token_number, Model model) {
         } else if (current_token.value.compare("jal") == 0) {
             string reg = model.tokens[token_number + 1].value;
             parsed_output = r_instruction(current_token.value, reg);
+            new_token_number = token_number + 1;
+        } else if (current_token.value.compare("lw") == 0) {
+            string reg_d = model.tokens[token_number + 1].value;
+            string offset = model.tokens[token_number + 2].value;
+            string reg_s = model.tokens[token_number + 3].value;
+            parsed_output = rr_instruction(current_token.value, reg_d, offset, reg_s);
             new_token_number = token_number + 1;
         } else {
             new_token_number = token_number + 1;
