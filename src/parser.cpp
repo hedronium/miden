@@ -81,8 +81,8 @@ string fixed_size_binary(string immediate, int size) {
 string rrr_instruction(string name, string reg_d, string reg_s,
     string reg_t) {
     ostringstream os;
-    os << opcode(name) << " " << register_(reg_d) << " " << register_(reg_s) <<
-        " " << zeros(4) << " " << register_(reg_t) << endl;
+    os << opcode(name) << register_(reg_d) << register_(reg_s)
+        << zeros(4) << register_(reg_t) << endl;
         return os.str();
 }
 
@@ -90,15 +90,15 @@ string rrr_instruction(string name, string reg_d, string reg_s,
 string rri_instruction(string name, string reg_d, string reg_s,
     string value) {
     ostringstream os;
-    os << opcode(name) << " " << register_(reg_d) << " " <<
-        register_(reg_d) << " " << fixed_size_binary(value, 7) << endl;
+    os << opcode(name) << register_(reg_d) <<
+        register_(reg_d) << fixed_size_binary(value, 7) << endl;
     return os.str();
 }
 
 // li $s0, 1
 string ri_instruction(string name, string reg_d, string value) {
     ostringstream os;
-    os << opcode(name) << " " << register_(reg_d) << " " <<
+    os << opcode(name) << register_(reg_d) <<
         fixed_size_binary(value, 10) << endl;
     return os.str();
 }
@@ -106,33 +106,33 @@ string ri_instruction(string name, string reg_d, string value) {
 // j done
 string j_instruction(string name, string target) {
     ostringstream os;
-    os << opcode(name) << " " << fixed_size_binary(target, 13) << endl;
+    os << opcode(name) << fixed_size_binary(target, 13) << endl;
     return os.str();
 }
 
 // jr $t0
 string r_instruction(string name, string reg) {
     ostringstream os;
-    os << opcode(name) << " " << zeros(10) << " " << register_(reg) << endl;
+    os << opcode(name) << zeros(10) << register_(reg) << endl;
     return os.str();
 }
 
-// jr $t0
-string rr_instruction(string name, string reg_d, string offset,
-    string reg_s) {
-    ostringstream os;
-    os << opcode(name) << " " << register_(reg_d) << " "
-        << register_(reg_s) << "(" <<
-        offset << ")" << endl;
-    return os.str();
-}
+// // jr $t0
+// string rr_instruction(string name, string reg_d, string offset,
+//     string reg_s) {
+//     ostringstream os;
+//     os << opcode(name) << " " << register_(reg_d) << " "
+//         << register_(reg_s) << "(" <<
+//         offset << ")" << endl;
+//     return os.str();
+// }
 
 // beq $s0, $t0, loop
 string rrj_instruction(string name, string reg_a, string reg_b,
     string target) {
     ostringstream os;
-    os << opcode(name) << " " << register_(reg_a)
-        << " " << register_(reg_b) << " " << fixed_size_binary(target, 7)
+    os << opcode(name) << register_(reg_a)
+        << register_(reg_b) << fixed_size_binary(target, 7)
         << endl;
     return os.str();
 }
@@ -185,13 +185,6 @@ string parse(int token_number, Model model) {
             string target = label_address(
                 model.tokens[token_number + 1].value, model);
             parsed_output = j_instruction(current_token.value, target);
-            new_token_number = token_number + 2;
-        } else if (current_token.value.compare("lw") == 0) {
-            string reg_d = model.tokens[token_number + 1].value;
-            string offset = model.tokens[token_number + 2].value;
-            string reg_s = model.tokens[token_number + 3].value;
-            parsed_output = rr_instruction(current_token.value, reg_d,
-                offset, reg_s);
             new_token_number = token_number + 2;
         } else {
             new_token_number = token_number + 1;
