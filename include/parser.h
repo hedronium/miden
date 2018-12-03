@@ -15,5 +15,6 @@ using std::ostringstream;
 using std::to_string;
 
 string parse(int, Model);
+string fixed_size_binary(string, int);
 
 #endif  // MIDEN_INCLUDE_PARSER_H_

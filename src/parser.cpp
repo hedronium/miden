@@ -68,6 +68,15 @@ string zeros(int n) {
     return "0" + zeros(n - 1);
 }
 
+string fixed_size_binary(string immediate, int size) {
+    int extra_bits = size - immediate.size();
+
+    if (extra_bits == 1)
+        return "0" + immediate;
+    else
+        return "0" + fixed_size_binary(immediate, size - 1);
+}
+
 // add $s0, $s0, $s1
 string rrr_instruction(string name, string reg_d, string reg_s,
     string reg_t) {
@@ -81,29 +90,30 @@ string rrr_instruction(string name, string reg_d, string reg_s,
 string rri_instruction(string name, string reg_d, string reg_s,
     string value) {
     ostringstream os;
-    os << opcode(name) << " " << register_(reg_d) << ", " <<
-        register_(reg_d) << ", " << value << endl;
+    os << opcode(name) << " " << register_(reg_d) << " " <<
+        register_(reg_d) << " " << fixed_size_binary(value, 7) << endl;
     return os.str();
 }
 
 // li $s0, 1
 string ri_instruction(string name, string reg_d, string value) {
     ostringstream os;
-    os << opcode(name) << " " << register_(reg_d) << ", " << value << endl;
+    os << opcode(name) << " " << register_(reg_d) << " " <<
+        fixed_size_binary(value, 10) << endl;
     return os.str();
 }
 
 // j done
-string j_instruction(string name, string label) {
+string j_instruction(string name, string target) {
     ostringstream os;
-    os << opcode(name) << " " << label << endl;
+    os << opcode(name) << " " << fixed_size_binary(target, 13) << endl;
     return os.str();
 }
 
 // jr $t0
 string r_instruction(string name, string reg) {
     ostringstream os;
-    os << opcode(name) << " " << register_(reg) << endl;
+    os << opcode(name) << " " << zeros(10) << " " << register_(reg) << endl;
     return os.str();
 }
 
@@ -119,10 +129,11 @@ string rr_instruction(string name, string reg_d, string offset,
 
 // beq $s0, $t0, loop
 string rrj_instruction(string name, string reg_a, string reg_b,
-    string label) {
+    string target) {
     ostringstream os;
     os << opcode(name) << " " << register_(reg_a)
-        << ", " << register_(reg_b) << ", " << label << endl;
+        << " " << register_(reg_b) << " " << fixed_size_binary(target, 7)
+        << endl;
     return os.str();
 }
 
@@ -132,9 +143,7 @@ string parse(int token_number, Model model) {
     string parsed_output;
     int new_token_number;
 
-    if (current_token.name.compare("LBL") == 0) {
-        new_token_number = token_number + 1;
-    } else if (current_token.name.compare("KWD") == 0) {
+    if (current_token.name.compare("KWD") == 0) {
         if (current_token.value.compare("li") == 0) {
             string reg = model.tokens[token_number + 1].value;
             string value = model.tokens[token_number + 2].value;
@@ -158,12 +167,14 @@ string parse(int token_number, Model model) {
         } else if (current_token.value.compare("beq") == 0) {
             string reg_a = model.tokens[token_number + 1].value;
             string reg_b = model.tokens[token_number + 2].value;
-            string target = model.tokens[token_number + 3].value;
+            string target = label_address(
+                model.tokens[token_number + 3].value, model);
             parsed_output = rrj_instruction(current_token.value,
                 reg_a, reg_b, target);
             new_token_number = token_number + 4;
         } else if (current_token.value.compare("j") == 0) {
-            string target = model.tokens[token_number + 1].value;
+            string target = label_address(
+                model.tokens[token_number + 1].value, model);
             parsed_output = j_instruction(current_token.value, target);
             new_token_number = token_number + 2;
         } else if (current_token.value.compare("jr") == 0) {
@@ -171,10 +182,9 @@ string parse(int token_number, Model model) {
             parsed_output = r_instruction(current_token.value, reg);
             new_token_number = token_number + 2;
         } else if (current_token.value.compare("jal") == 0) {
-            // cout << model.labels[1].name << endl;
-            string address = label_address(
+            string target = label_address(
                 model.tokens[token_number + 1].value, model);
-            parsed_output = j_instruction(current_token.value, address);
+            parsed_output = j_instruction(current_token.value, target);
             new_token_number = token_number + 2;
         } else if (current_token.value.compare("lw") == 0) {
             string reg_d = model.tokens[token_number + 1].value;
