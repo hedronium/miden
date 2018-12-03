@@ -19,7 +19,7 @@
 
 	j multiplyNumbersLoop
 
-multiplyNumbersReturn:
+26 multiplyNumbersReturn:
 	jr $ra
-done:
+28 done:
 	

@@ -5,29 +5,14 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "./token.h"
+#include "./model.h"
+#include "./label.h"
 
 using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
-
-struct Token {
-    string name;
-    string value;
-};
-
-struct Label {
-    string name;
-    int address;
-};
-
-struct Model {
-    string status;
-    string currentToken;
-    vector<Token> tokens;
-    vector<Label> labels;
-    int currentInstructionAddress;
-};
 
 bool is_numeric(char);
 

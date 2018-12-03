@@ -30,6 +30,13 @@ Token new_token(string name, string value) {
     return token;
 }
 
+bool is_instruction(string name) {
+    return !name.compare("add") || !name.compare("addi")
+        || !name.compare("beq") || !name.compare("li")
+        || !name.compare("li") || !name.compare("j")
+        || !name.compare("jal") || !name.compare("jr");
+}
+
 Model tokenize(string line, Model model) {
     bool last_character = false;
 
@@ -50,6 +57,11 @@ Model tokenize(string line, Model model) {
             model.currentToken += c;
         } else if (c == ':') {
             // Label Declaration
+            Label label;
+            label.name = model.currentToken;
+            label.address = model.currentInstructionAddress;
+            model.labels.push_back(label);
+
             model.tokens.push_back(
                 new_token("LBL", model.currentToken));
 
@@ -60,19 +72,22 @@ Model tokenize(string line, Model model) {
                 model.tokens.push_back(
                     new_token("KWD", model.currentToken));
 
+                if (is_instruction(model.currentToken))
+                    model.currentInstructionAddress += 2;
+
                 model.currentToken = "";
             }
         } else if (c == '$') {
             model.status = "register";
         }
 
-        if (last_character && model.currentToken.length() > 0) {
-            // Keyword
-            model.tokens.push_back(
-                new_token("KWD", model.currentToken));
+        // if (last_character && model.currentToken.length() > 0) {
+        //     // Keyword
+        //     model.tokens.push_back(
+        //         new_token("KWD", model.currentToken));
 
-            model.currentToken = "";
-        }
+        //     model.currentToken = "";
+        // }
     } else if (model.status.compare("register") == 0) {
         // register
 

@@ -1,13 +1,14 @@
 // Copyright Miden 2018
 #include <iostream>
+#include <string>
 #include "../include/tokenizer.h"
 #include "../include/maybe.h"
 
 using std::cout;
 using std::endl;
+using std::string;
 
 // imperative
-
 void debug_token(Token token) {
     cout << token.name << " = " << token.value << endl;
 }
@@ -18,62 +19,63 @@ void debug_tokens(Model model) {
         debug_token(model.tokens[i]);
 }
 
-void assert_(Maybe assertion) {
+void assert_(Maybe<string> assertion) {
     if (assertion.is(NOTHING))
         cout << ".";
     else
-        cout << assertion.getValue();
+        cout << assertion.value;
 }
 
 // functional
-Maybe test_label_declaration(Model model) {
+Maybe<string> test_label_declaration(Model model) {
     if (!model.tokens[0].name.compare("LBL")
         && !model.tokens[0].value.compare("main"))
-        return Maybe(NOTHING);
+        return Maybe<string> ();
     else
-        return Maybe("Label declaration failed.");
+        return Maybe<string> ("Label declaration failed.");
 }
 
-Maybe test_keyword(Model model) {
+Maybe<string> test_keyword(Model model) {
     if (!model.tokens[0].name.compare("KWD")
         && !model.tokens[0].value.compare("li"))
-        return Maybe(NOTHING);
+        return Maybe<string> ();
     else
-        return Maybe("Keyword failed.");
+        return Maybe<string> ("Keyword failed.");
 }
 
-Maybe test_register(Model model) {
+Maybe<string> test_register(Model model) {
     if (!model.tokens[1].name.compare("REG")
         && !model.tokens[1].value.compare("s0"))
-        return Maybe(NOTHING);
+        return Maybe<string> ();
     else
-        return Maybe("Register failed.");
+        return Maybe<string> ("Register failed.");
 }
 
-Maybe test_integer(Model model) {
+Maybe<string> test_integer(Model model) {
     if (!model.tokens[2].name.compare("INT")
         && !model.tokens[2].value.compare("1"))
-        return Maybe(NOTHING);
+        return Maybe<string> ();
     else
-        return Maybe("Integer failed.");
+        return Maybe<string> ("Integer failed.");
 }
 
-Maybe test_target(Model model) {
+Maybe<string> test_target(Model model) {
     if (!model.tokens[3].name.compare("TAR")
         && !model.tokens[3].value.compare("done"))
-        return Maybe(NOTHING);
+        return Maybe<string> ();
     else
-        return Maybe("Target failed.");
+        return Maybe<string> ("Target failed.");
 }
 
-Maybe test_register_offset(Model model) {
+Maybe<string> test_register_offset(Model model) {
     if (!model.tokens[2].name.compare("INT")
         && !model.tokens[2].value.compare("4")
         && !model.tokens[3].name.compare("REG")
-        && !model.tokens[3].value.compare("sp"))
-        return Maybe(NOTHING);
-    else
-        return Maybe("Register offset failed.");
+        && !model.tokens[3].value.compare("sp")) {
+        return Maybe<string> ();
+    } else {
+        return Maybe<string> ("Register offset failed.");
+    }
 }
 
 int main() {

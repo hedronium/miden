@@ -7,12 +7,73 @@ bool has_next_token(int token_number, Model model) {
     return true;
 }
 
+string opcode(string name) {
+    if (!name.compare("add"))
+        return "000";
+    else if (!name.compare("addi"))
+        return "001";
+    else if (!name.compare("beq"))
+        return "010";
+    else if (!name.compare("li"))
+        return "011";
+    else if (!name.compare("j"))
+        return "100";
+    else if (!name.compare("jal"))
+        return "101";
+    else if (!name.compare("jr"))
+        return "110";
+    else
+        return "111";
+}
+
+string register_(string name) {
+    if (!name.compare("0"))
+        return "000";
+    else if (!name.compare("s0"))
+        return "001";
+    else if (!name.compare("t0"))
+        return "010";
+    else if (!name.compare("v0"))
+        return "011";
+    else if (!name.compare("a0"))
+        return "100";
+    else if (!name.compare("a1"))
+        return "101";
+    else if (!name.compare("ra"))
+        return "110";
+    else
+        return "111";
+}
+
+Maybe<Label> label_search(string name, Model model, int count) {
+    if (model.labels[count].name == name)
+        return Maybe<Label> (model.labels[count]);
+    else if ((count + 1) != model.labels.size())
+        return label_search(name, model, count + 1);
+    else
+        return Maybe<Label> ();
+}
+
+string label_address(string name, Model model) {
+    Maybe<Label> result = label_search(name, model, 0);
+    if (result.is(NOTHING))
+        return "";
+    else
+        return to_string(result.value.address);
+}
+
+string zeros(int n) {
+    if (n == 0)
+        return "";
+    return "0" + zeros(n - 1);
+}
+
 // add $s0, $s0, $s1
-string rrr_instruction(string name, string reg_d, string reg_s1,
-    string reg_s2) {
+string rrr_instruction(string name, string reg_d, string reg_s,
+    string reg_t) {
     ostringstream os;
-    os << name << " " << reg_d << ", " << reg_s1 <<
-        ", " << reg_s2 << endl;
+    os << opcode(name) << " " << register_(reg_d) << " " << register_(reg_s) <<
+        " " << zeros(4) << " " << register_(reg_t) << endl;
         return os.str();
 }
 
@@ -20,35 +81,39 @@ string rrr_instruction(string name, string reg_d, string reg_s1,
 string rri_instruction(string name, string reg_d, string reg_s,
     string value) {
     ostringstream os;
-    os << name << " " << reg_d << ", " << reg_d << ", " << value << endl;
+    os << opcode(name) << " " << register_(reg_d) << ", " <<
+        register_(reg_d) << ", " << value << endl;
     return os.str();
 }
 
 // li $s0, 1
 string ri_instruction(string name, string reg_d, string value) {
     ostringstream os;
-    os << name << " " << reg_d << ", " << value << endl;
+    os << opcode(name) << " " << register_(reg_d) << ", " << value << endl;
     return os.str();
 }
 
 // j done
 string j_instruction(string name, string label) {
     ostringstream os;
-    os << name << " " << label << endl;
+    os << opcode(name) << " " << label << endl;
     return os.str();
 }
 
 // jr $t0
 string r_instruction(string name, string reg) {
     ostringstream os;
-    os << name << " " << reg << endl;
+    os << opcode(name) << " " << register_(reg) << endl;
     return os.str();
 }
 
 // jr $t0
-string rr_instruction(string name, string reg_d, string offset, string reg_s) {
+string rr_instruction(string name, string reg_d, string offset,
+    string reg_s) {
     ostringstream os;
-    os << name << " " << reg_d << " " << reg_s << "(" << offset << ")" << endl;
+    os << opcode(name) << " " << register_(reg_d) << " "
+        << register_(reg_s) << "(" <<
+        offset << ")" << endl;
     return os.str();
 }
 
@@ -56,7 +121,8 @@ string rr_instruction(string name, string reg_d, string offset, string reg_s) {
 string rrj_instruction(string name, string reg_a, string reg_b,
     string label) {
     ostringstream os;
-    os << name << " " << reg_a << ", " << reg_b << ", " << label << endl;
+    os << opcode(name) << " " << register_(reg_a)
+        << ", " << register_(reg_b) << ", " << label << endl;
     return os.str();
 }
 
@@ -67,11 +133,6 @@ string parse(int token_number, Model model) {
     int new_token_number;
 
     if (current_token.name.compare("LBL") == 0) {
-        Label label;
-        label.name = current_token.value;
-        label.address = model.currentInstructionAddress;
-        model.labels.push_back(label);
-
         new_token_number = token_number + 1;
     } else if (current_token.name.compare("KWD") == 0) {
         if (current_token.value.compare("li") == 0) {
@@ -110,7 +171,9 @@ string parse(int token_number, Model model) {
             parsed_output = r_instruction(current_token.value, reg);
             new_token_number = token_number + 2;
         } else if (current_token.value.compare("jal") == 0) {
-            string address = model.tokens[token_number + 1].value;
+            // cout << model.labels[1].name << endl;
+            string address = label_address(
+                model.tokens[token_number + 1].value, model);
             parsed_output = j_instruction(current_token.value, address);
             new_token_number = token_number + 2;
         } else if (current_token.value.compare("lw") == 0) {

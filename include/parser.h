@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include "../include/tokenizer.h"
+#include "../include/maybe.h"
 
 using std::cout;
 using std::endl;

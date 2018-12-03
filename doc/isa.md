@@ -1,7 +1,7 @@
 # Instructions
 There are 7 instructions.
 
-|Binary |Name   |
+|Opcode |Name   |
 |-------|-------|
 |000    |   add |
 |001    |   addi|

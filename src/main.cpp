@@ -46,7 +46,7 @@ int main() {
 
     // debug_tokens(model);
 
-    cout << parse(0, model) << endl;
+    // cout << parse(0, model) << endl;
 
     return 0;
 }

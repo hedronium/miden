@@ -3,20 +3,21 @@
 #define MIDEN_INCLUDE_MAYBE_H_
 
 #define NOTHING ""
-#define JUST "__JUST__"
 
 #include <string>
+#include "../include/tokenizer.h"
 
 using std::string;
 
+template <class T>
 class Maybe {
-    string value;
+    bool nothing;
  public:
-    explicit Maybe(string);
+    T value;
 
+    explicit Maybe(T);
+    Maybe();
     bool is(string);
-
-    string getValue();
 };
 
 #endif  // MIDEN_INCLUDE_MAYBE_H_
