@@ -77,6 +77,15 @@ string fixed_size_binary(string immediate, int size) {
         return "0" + fixed_size_binary(immediate, size - 1);
 }
 
+string decimal_to_binary(int decimal) {
+    cout << decimal << endl;
+    return "";
+}
+
+string decimal_to_binary(string decimal) {
+    return decimal_to_binary(stoi(decimal));
+}
+
 // add $s0, $s0, $s1
 string rrr_instruction(string name, string reg_d, string reg_s,
     string reg_t) {

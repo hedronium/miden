@@ -13,8 +13,10 @@ using std::cout;
 using std::endl;
 using std::ostringstream;
 using std::to_string;
+using std::stoi;
 
 string parse(int, Model);
 string fixed_size_binary(string, int);
+string decimal_to_binary(string);
 
 #endif  // MIDEN_INCLUDE_PARSER_H_

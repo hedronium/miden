@@ -46,7 +46,10 @@ int main() {
 
     // debug_tokens(model);
 
-    cout << parse(0, model) << endl;
+    // cout << parse(0, model) << endl;
+
+    // 00001101
+    cout << decimal_to_binary("13") << endl;
 
     return 0;
 }
