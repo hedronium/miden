@@ -1,1 +1,1 @@
-![alt text](https://github.com/nahiyan/miden/miden-logo.png "Miden")
+![alt text](https://github.com/nahiyan/miden/blob/master/miden-logo.png "Miden")
