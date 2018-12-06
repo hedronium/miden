@@ -80,7 +80,7 @@ Here's the machine code generated out of the assembly code above:
 # Instruction Set Architecture
 Miden supports 7 instructions and 8 registers. You can find more information [here](https://github.com/nahiyan/miden/blob/master/doc/isa.md).
 
-# How Miden Works (through examples)
+# How Miden Works Through Examples
 Summarizing everything, Miden takes the assembly code and generates machine code out of it.
 
 Here are the steps involved in the process:
