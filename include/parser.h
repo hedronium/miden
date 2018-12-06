@@ -20,5 +20,6 @@ string parse(int, Model);
 string parse(Model);
 string fixed_size_binary(string, int);
 string decimal_to_binary(string);
+bool token_exists(int, Model);
 
 #endif  // MIDEN_INCLUDE_PARSER_H_

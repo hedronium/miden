@@ -31,7 +31,7 @@ int multiplyNumbers(int a, int b) {
 
 It's equivalent to the following piece of assembly code:
 
-```nasm
+```asm
 main:
 	li $s0, 0
 	li $a0, 18
@@ -92,7 +92,7 @@ To do so, the assembly code is fed into a tokenizer. The tokenizer reads the ass
 
 Let's say you've got 2 lines of assembly code:
 
-```nasm
+```asm
 main:
 	li $s0, 0
 ```

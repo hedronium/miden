@@ -1,10 +1,10 @@
 // Copyright Miden 2018
 #include "../include/parser.h"
 
-bool has_next_token(int token_number, Model model) {
-    if ((model.tokens.size() - token_number + 1) == 0)
-        return false;
-    return true;
+bool token_exists(int token_number, Model model) {
+    if ((static_cast<int>(model.tokens.size()) - (token_number + 1)) >= 0)
+        return true;
+    return false;
 }
 
 string opcode(string name) {
@@ -108,7 +108,7 @@ string rri_instruction(string name, string reg_d, string reg_s,
     string value) {
     ostringstream os;
     os << opcode(name) << register_(reg_d) <<
-        register_(reg_d)
+        register_(reg_s)
         << fixed_size_binary(
             decimal_to_binary(value), 7);
     return os.str();
@@ -160,44 +160,58 @@ string parse(int token_number, Model model) {
         if (current_token.value.compare("li") == 0) {
             string reg = model.tokens[token_number + 1].value;
             string value = model.tokens[token_number + 2].value;
+
             parsed_output = ri_instruction(current_token.value,
                 reg, value);
+
             new_token_number = token_number + 3;
         } else if (current_token.value.compare("addi") == 0) {
             string reg_d = model.tokens[token_number + 1].value;
             string reg_s = model.tokens[token_number + 2].value;
             string value = model.tokens[token_number + 3].value;
+
             parsed_output = rri_instruction(current_token.value,
                 reg_d, reg_s, value);
+
             new_token_number = token_number + 4;
         } else if (current_token.value.compare("add") == 0) {
             string reg_d = model.tokens[token_number + 1].value;
             string reg_s1 = model.tokens[token_number + 2].value;
             string reg_s2 = model.tokens[token_number + 3].value;
+
             parsed_output = rrr_instruction(current_token.value,
                 reg_d, reg_s1, reg_s2);
+
             new_token_number = token_number + 4;
         } else if (current_token.value.compare("beq") == 0) {
             string reg_a = model.tokens[token_number + 1].value;
             string reg_b = model.tokens[token_number + 2].value;
             string target = label_address(
                 model.tokens[token_number + 3].value, model);
+
             parsed_output = rrj_instruction(current_token.value,
                 reg_a, reg_b, target);
+
             new_token_number = token_number + 4;
         } else if (current_token.value.compare("j") == 0) {
             string target = label_address(
                 model.tokens[token_number + 1].value, model);
+
             parsed_output = j_instruction(current_token.value, target);
+
             new_token_number = token_number + 2;
         } else if (current_token.value.compare("jr") == 0) {
             string reg = model.tokens[token_number + 1].value;
+
             parsed_output = r_instruction(current_token.value, reg);
+
             new_token_number = token_number + 2;
         } else if (current_token.value.compare("jal") == 0) {
             string target = label_address(
                 model.tokens[token_number + 1].value, model);
+
             parsed_output = j_instruction(current_token.value, target);
+
             new_token_number = token_number + 2;
         } else {
             new_token_number = token_number + 1;
@@ -210,7 +224,7 @@ string parse(int token_number, Model model) {
     }
 
     // return parsed output
-    if (has_next_token(new_token_number - 1, model)) {
+    if (token_exists(new_token_number, model)) {
         return parsed_output + parse(new_token_number, model);
     } else {
         return parsed_output;
