@@ -108,7 +108,9 @@ string rri_instruction(string name, string reg_d, string reg_s,
     string value) {
     ostringstream os;
     os << opcode(name) << register_(reg_d) <<
-        register_(reg_d) << fixed_size_binary(value, 7) << endl;
+        register_(reg_d)
+        << fixed_size_binary(
+            decimal_to_binary(value), 7) << endl;
     return os.str();
 }
 
@@ -116,14 +118,17 @@ string rri_instruction(string name, string reg_d, string reg_s,
 string ri_instruction(string name, string reg_d, string value) {
     ostringstream os;
     os << opcode(name) << register_(reg_d) <<
-        fixed_size_binary(value, 10) << endl;
+        fixed_size_binary(
+            decimal_to_binary(value), 10) << endl;
     return os.str();
 }
 
 // j done
 string j_instruction(string name, string target) {
     ostringstream os;
-    os << opcode(name) << fixed_size_binary(target, 13) << endl;
+    os << opcode(name)
+        << fixed_size_binary(
+            decimal_to_binary(target), 13) << endl;
     return os.str();
 }
 
@@ -149,7 +154,9 @@ string rrj_instruction(string name, string reg_a, string reg_b,
     string target) {
     ostringstream os;
     os << opcode(name) << register_(reg_a)
-        << register_(reg_b) << fixed_size_binary(target, 7)
+        << register_(reg_b)
+        << fixed_size_binary(
+            decimal_to_binary(target), 7)
         << endl;
     return os.str();
 }
