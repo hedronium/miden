@@ -1,64 +1,102 @@
-// label declaration
-LBL name
+# About Token
+Miden reads the assembly code and turns it into a series of identical pieces called **tokens**.
 
-// keyword
-KWD name
+For example, here's a line of assembly code:
 
-// register name
-REG name
+```asm
+li $s0, 1
+```
 
-// integer
-INT value
+The code above can be represented by the following series of tokens:
 
-// single line comment
-COM comment
+```
+KWD	li
+REG	s0
+INT	1
+```
 
-// target
-TAR name
+As you can see, each token has:
 
-LBL = main
-KWD = li
-REG = s0
-INT = 0
-KWD = li
-REG = a0
-INT = 18
-KWD = li
-REG = a1
-INT = 6
-KWD = jal
-KWD = multiplyNumbers
-KWD = addi
-REG = s0
-REG = v0
-INT = 0
-KWD = j
-KWD = done
-LBL = multiplyNumbers
-KWD = li
-REG = t0
-INT = 0
-KWD = li
-REG = v0
-INT = 0
-KWD = j
-KWD = multiplyNumbersLoop
-LBL = multiplyNumbersLoop
-KWD = beq
-REG = t0
-REG = a1
-TAR = multiplyNumbersReturn
-KWD = add
-REG = v0
-REG = v0
-REG = a0
-KWD = addi
-REG = t0
-REG = t0
-INT = 1
-KWD = j
-KWD = multiplyNumbersLoop
-LBL = multiplyNumbersReturn
-KWD = jr
-REG = ra
-LBL = done
+- a name
+- a value
+
+As an example, the first token has a name of "KWD" and a value of "li."
+
+Token names are 3 characters long for simplicity.
+
+# Types of tokens
+Miden utilizes 5 types of tokens:
+
+|Name/Identifier|Description|
+|----|-----------|
+|LBL | Label|
+|KWD| Keyword|
+|REG|Register|
+|INT|Integer|
+|TAR|Target|
+
+# Labels
+Label declarations in assembly are represented by **LBL** tokens.
+
+For example, here's an assembly code with a declaration of a label named "main":
+
+```asm
+main:
+```
+
+This will be represented by the token:
+
+```
+LBL	main
+```
+
+# Keywords
+In assembly code, keyword is just a word that can either be the name of an instruction or a label.
+
+Here's an assembly code representing a keyword "li" along with registers "s0" and integer "1":
+
+```asm
+li $s0, 1
+```
+
+The "li" keyword will be represented by the token:
+
+```
+KWD	li
+```
+
+# Registers
+Registers in assembly code are units of storage within a processor. In MIPS assembly, registers are represented by a dollar sign '$' and a name.
+
+In this following assembly code, we got a register named "s0":
+
+```asm
+li $s0, 1
+```
+
+This register will be represented by the token:
+
+```
+REG	s0
+```
+
+# Integers
+In assembly code, integers or any values, which do not have to be retrieved from anywhere else, are usually called immediate values.
+
+> Miden only supports integer immediate values.
+
+# Target
+A target is a label pointing to an instruction or an address of an instruction.
+
+For example, we got two labels "setTwo" and "setThree" here:
+
+```asm
+j setTwo
+
+setTwo:
+	li $s0, 2
+setThree:
+	li $s0, 3	
+```
+
+In the code, we got a **j** instruction which jumps to the label "setTwo." Here, "setTwo" inside the **j** instruction is a **target**.
