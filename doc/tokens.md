@@ -99,4 +99,8 @@ setThree:
 	li $s0, 3	
 ```
 
-In the code, we got a **j** instruction which jumps to the label "setTwo." Here, "setTwo" inside the **j** instruction is a **target**.
+In the code, we got a **j** instruction which jumps to the label "setTwo."
+
+Here, "setTwo" inside the **j** instruction is a **target**.
+
+> Sometimes, targets are identified by the tokenizer as a keyword. This is especially when the tokenizer cannot be certain about a target. However, this doesn't violate any rule as a keyword is defined as either a target or an instruction name.
