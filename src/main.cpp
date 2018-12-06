@@ -44,7 +44,7 @@ int main() {
         model = tokenize(line + " ", model);
     }
 
-    // debug_tokens(model);
+    debug_tokens(model);
 
     cout << parse(model) << endl;
 

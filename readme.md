@@ -79,3 +79,107 @@ Here's the machine code generated out of the assembly code above:
 
 # Instruction Set Architecture
 Miden supports 7 instructions and 8 registers. You can find more information [here](https://github.com/nahiyan/miden/blob/master/doc/isa.md).
+
+# How Miden Works (through examples)
+Summarizing everything, Miden takes the assembly code and generates machine code out of it.
+
+Here are the steps involved in the process:
+
+## Step 1: Tokenize
+The first step in the process is to convert the assembly code into series of tokens.
+
+To do so, the assembly code is fed into a tokenizer. The tokenizer reads the assembly code and converts it into a series of tokens.
+
+Let's say you've got 2 lines of assembly code:
+
+```nasm
+main:
+	li $s0, 0
+```
+
+If you feed the code into the tokenizer, you'll get 4 tokens:
+
+```
+LBL 	main
+KWD 	li
+REG 	s0
+INT 	0
+```
+
+### Tokens
+Each token has:
+
+- a name
+- a value
+
+As an example, the first token has a name of "LBL" and a value of "main."
+
+Token names are 3 characters long for simplicity.
+
+You can read more about tokens [here](https://github.com/nahiyan/miden/blob/master/doc/tokens.md).
+
+As you can see from the assembly code, we've got:
+
+- a label (LBL) "main"
+- a keyword for an instruction (KWD) "li"
+- a register (REG) "s0"
+- an integer (INT) "0"
+
+You can get an idea of how the tokenizer divides the assembly code into identical chunks, or as we know - tokens.
+
+### Labels
+
+The tokenizer identifies the labels as seen above. It doesn't stop there, it remembers the labels and keeps log of the instruction address each label points to.
+
+> In the example above, the label named "main" points to the first instruction named "li," so it has address of 0.
+
+## Step 2: Parse
+Next step in the process is to take the tokens generated and feed it to the parser. The parser will generate machine code from the tokens.
+
+Now that we have converted the assembly code into a series of tokens, it's much easier to understand to go through the tokens one by one, understand the meanings using simple logic and generate machine code!
+
+As seen from the example code in step 1, we've got 4 tokens to parse:
+
+```
+LBL 	main
+KWD 	li
+REG 	s0
+INT 	0
+```
+
+Here are the steps the parser will take to generate machine code:
+
+- The parser will ignore the label declaration as the tokenizer already took care of logging it down.
+- The parser smartly identifies the keyword, "li," as an instruction. This will trigger it to expect a register and an immediate value in the next 2 tokens:
+	- Register "s0" and immediate integer value "0" are identified
+
+- Parser, after successfully identifying an "li" (load immediate) instruction, generates a machine code out of it.
+
+Here's the final output:
+
+``
+0110010000000000
+``
+
+### Machine Code
+Let's break down the machine code that has just been generated:
+
+``
+0110010000000000
+``
+
+Since Miden generates machine code for 16-bit processors, machine codes of each instruction is, as expected, 16 bits long.
+
+This machine code is for:
+
+``
+li $s0, 0
+``
+
+which is an instruction of type "RI." More on this in the [ISA](https://github.com/nahiyan/miden/blob/master/doc/isa.md).
+
+Since it's an RI-type instruction, here's the formatting:
+
+- The first 3 bits "011" represents the opcode for "li."
+- The next 3 bits "001" represents the binary for register "s0."
+- The next 10 bits represent the immediate value "0."
