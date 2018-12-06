@@ -14,8 +14,10 @@ using std::endl;
 using std::ostringstream;
 using std::to_string;
 using std::stoi;
+using std::reverse;
 
 string parse(int, Model);
+string parse(Model);
 string fixed_size_binary(string, int);
 string decimal_to_binary(string);
 

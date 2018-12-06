@@ -77,13 +77,21 @@ string fixed_size_binary(string immediate, int size) {
         return "0" + fixed_size_binary(immediate, size - 1);
 }
 
-string decimal_to_binary(int decimal) {
-    cout << decimal << endl;
-    return "";
+string decimal_to_binary(int decimal, string binary) {
+    int division_result = static_cast<int>(decimal / 2);
+    int remainder = static_cast<int>(decimal % 2);
+
+    string new_binary = to_string(remainder) + binary;
+
+    if (division_result == 0) {
+        return new_binary;
+    } else {
+        return decimal_to_binary(division_result, new_binary);
+    }
 }
 
 string decimal_to_binary(string decimal) {
-    return decimal_to_binary(stoi(decimal));
+    return decimal_to_binary(stoi(decimal), "");
 }
 
 // add $s0, $s0, $s1
@@ -211,4 +219,8 @@ string parse(int token_number, Model model) {
     } else {
         return parsed_output;
     }
+}
+
+string parse(Model model) {
+    return parse(0, model);
 }
