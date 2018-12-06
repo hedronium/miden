@@ -67,17 +67,6 @@ Maybe<string> test_target(Model model) {
         return Maybe<string> ("Target failed.");
 }
 
-Maybe<string> test_register_offset(Model model) {
-    if (!model.tokens[2].name.compare("INT")
-        && !model.tokens[2].value.compare("4")
-        && !model.tokens[3].name.compare("REG")
-        && !model.tokens[3].value.compare("sp")) {
-        return Maybe<string> ();
-    } else {
-        return Maybe<string> ("Register offset failed.");
-    }
-}
-
 int main() {
     // setup model
     Model model;
@@ -108,11 +97,6 @@ int main() {
     assert_(
         test_target(
             tokenize("beq $t0, $s0, done", model)));
-
-    // Register offset
-    assert_(
-        test_register_offset(
-            tokenize("lw $s0, 4($sp)", model)));
 
     cout << endl;
 

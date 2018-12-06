@@ -99,7 +99,7 @@ string rrr_instruction(string name, string reg_d, string reg_s,
     string reg_t) {
     ostringstream os;
     os << opcode(name) << register_(reg_d) << register_(reg_s)
-        << zeros(4) << register_(reg_t) << endl;
+        << zeros(4) << register_(reg_t);
         return os.str();
 }
 
@@ -110,7 +110,7 @@ string rri_instruction(string name, string reg_d, string reg_s,
     os << opcode(name) << register_(reg_d) <<
         register_(reg_d)
         << fixed_size_binary(
-            decimal_to_binary(value), 7) << endl;
+            decimal_to_binary(value), 7);
     return os.str();
 }
 
@@ -119,7 +119,7 @@ string ri_instruction(string name, string reg_d, string value) {
     ostringstream os;
     os << opcode(name) << register_(reg_d) <<
         fixed_size_binary(
-            decimal_to_binary(value), 10) << endl;
+            decimal_to_binary(value), 10);
     return os.str();
 }
 
@@ -128,26 +128,16 @@ string j_instruction(string name, string target) {
     ostringstream os;
     os << opcode(name)
         << fixed_size_binary(
-            decimal_to_binary(target), 13) << endl;
+            decimal_to_binary(target), 13);
     return os.str();
 }
 
 // jr $t0
 string r_instruction(string name, string reg) {
     ostringstream os;
-    os << opcode(name) << zeros(10) << register_(reg) << endl;
+    os << opcode(name) << zeros(10) << register_(reg);
     return os.str();
 }
-
-// // jr $t0
-// string rr_instruction(string name, string reg_d, string offset,
-//     string reg_s) {
-//     ostringstream os;
-//     os << opcode(name) << " " << register_(reg_d) << " "
-//         << register_(reg_s) << "(" <<
-//         offset << ")" << endl;
-//     return os.str();
-// }
 
 // beq $s0, $t0, loop
 string rrj_instruction(string name, string reg_a, string reg_b,
@@ -156,8 +146,7 @@ string rrj_instruction(string name, string reg_a, string reg_b,
     os << opcode(name) << register_(reg_a)
         << register_(reg_b)
         << fixed_size_binary(
-            decimal_to_binary(target), 7)
-        << endl;
+            decimal_to_binary(target), 7);
     return os.str();
 }
 

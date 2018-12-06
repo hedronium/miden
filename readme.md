@@ -4,7 +4,10 @@
 </p>
 
 # Introduction
-Miden is an assembler that assembles MIPS assembly to machine code. It generates machine code for 16-bit RISC processors, and as a result, it only supports a subset of the MIPS assembly.
+Miden is an assembler that assembles MIPS assembly to machine code for 16-bit RISC processors.
+
+# Instruction Set Architecture
+Miden supports 7 instructions and 8 registers. You can find more information [here](https://github.com/nahiyan/miden/blob/master/doc/isa.md).
 
 # Example
 
@@ -77,10 +80,7 @@ Here's the machine code generated out of the assembly code above:
 1100000000000110
 ```
 
-# Instruction Set Architecture
-Miden supports 7 instructions and 8 registers. You can find more information [here](https://github.com/nahiyan/miden/blob/master/doc/isa.md).
-
-# How Miden Works Through Examples
+# How Miden Works
 Summarizing everything, Miden takes the assembly code and generates machine code out of it.
 
 Here are the steps involved in the process:
