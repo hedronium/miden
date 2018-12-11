@@ -26,11 +26,6 @@ void debug_tokens(Model model) {
 }
 
 int main() {
-    // gather 1 line of assembly code
-    ifstream asmc("input.asm");
-    string line;
-    // getline(asmc, line);
-
     // setup model
     Model model;
     model.status = "default";
@@ -44,6 +39,9 @@ int main() {
     string output_file_name;
     cout << "Name of the output file: " << endl;
     cin >> output_file_name;
+
+    ifstream asmc(input_file_name);
+    string line;
 
     // tokenize
     while (getline(asmc, line)) {
