@@ -8,6 +8,7 @@
 
 using std::endl;
 using std::cout;
+using std::cin;
 using std::ifstream;
 using std::vector;
 using std::string;
@@ -36,17 +37,23 @@ int main() {
     model.currentToken = "";
     model.currentInstructionAddress = 0;
 
-    // model = tokenize("li $s0, 0\n", model);
-    // model = tokenize("addi $s0, $t0, 1\n", model);
-    // model = tokenize("lw $s0, 4($sp)\n", model);
+    string input_file_name;
+    cout << "Name of the input file: " << endl;
+    cin >> input_file_name;
 
+    string output_file_name;
+    cout << "Name of the output file: " << endl;
+    cin >> output_file_name;
+
+    // tokenize
     while (getline(asmc, line)) {
         model = tokenize(line + " ", model);
     }
 
     // debug_tokens(model);
 
-    cout << parse(model) << endl;
+    ofstream output(output_file_name);
+    output << parse(model) << endl;
 
     return 0;
 }

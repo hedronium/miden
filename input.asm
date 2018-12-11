@@ -1,7 +1,7 @@
 main:
 	li $s0, 0
-	li $a0, 18
-	li $a1, 6
+	li $a0, 2
+	li $a1, 3
 	jal multiplyNumbers
 	addi $s0, $v0, 0
 	j done
